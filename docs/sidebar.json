@@ -1,0 +1,15 @@
+{
+  "profetorch": {
+    "Overview": "/",
+    "Fourier Series": "/Fourier",
+    "Holidays": "/Holidays",
+    "LinearX": "/LinearX",
+    "Squasher": "/Squasher",
+    "Trend": "/Trend",
+    "Blocks": "/blocks",
+    "Callbacks": "/callbacks",
+    "Data": "/data",
+    "Losses": "/losses",
+    "Base Model": "/model"
+  }
+}
