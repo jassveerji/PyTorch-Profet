@@ -8,17 +8,18 @@
 
 -->
 
-# ProFeTorch
+# PyTorch Profet
 
 > FB Prophet + Fastai + pyTorch.
 
-
 This is an alternative implementation of prophet which uses quantile regression instead of MCMC sampling. It provides the following benefits over prophet:
+
 - GPU usage.
 - Strict(er) upper and lower bounds.
 - Can add any other set of features to the time series.
 
 The time series is implemented as follows:
+
 $$
 \begin{aligned}
 y &= b(T(t) + S(t) + F(x)|l,u) \\
@@ -36,6 +37,7 @@ $$
 where $T(t)$ is the trend line, $S(t)$ are the seasonal components composed of a fourier sum, $F(x)$ is a linear function which weights features that is not related to time.
 
 The task is therefore to find the parameters $a, m, \cup_n a_n, \cup_n b_n, w$ that minimises a loss function $l(\hat{y}, y)$. The default is set to minimise $l1$ loss $\frac{1}{N}\sum_{i=1}^N |y_i - \hat{y_i}|$ so that the reliance on outliers is minimised. By default we also calculate the 5th and 95th quantile by minimising the tilted loss function. The quantile functions are calculated as:
+
 $$
 \begin{aligned}
 y_5 &= b(\hat{y} - (m_5 t + a_5)|l,u) \\
@@ -43,11 +45,8 @@ y_{95} &= b(\hat{y} + (m_{95} t + a_{95})|l,u)
 \end{aligned}
 $$
 
-## Install
-
-`pip install profetorch`
-
 ## ProFeTorch Training
+
 <div class="codecell" markdown="1">
 <div class="input_area" markdown="1">
 
@@ -60,9 +59,9 @@ model.fit(train_df)
 </div>
 <div class="output_area" markdown="1">
 
-    /opt/miniconda3/lib/python3.7/site-packages/pandas/core/frame.py:4117: SettingWithCopyWarning: 
+    /opt/miniconda3/lib/python3.7/site-packages/pandas/core/frame.py:4117: SettingWithCopyWarning:
     A value is trying to be set on a copy of a slice from a DataFrame
-    
+
     See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
       errors=errors,
 
@@ -93,9 +92,7 @@ plt.show()
 </div>
 <div class="output_area" markdown="1">
 
-
 ![png](docs/images/output_5_0.png)
-
 
 </div>
 
@@ -110,9 +107,7 @@ model.plot_components()
 </div>
 <div class="output_area" markdown="1">
 
-
 ![png](docs/images/output_6_0.png)
-
 
 </div>
 
@@ -126,9 +121,6 @@ list(model.named_parameters())
 
 </div>
 <div class="output_area" markdown="1">
-
-
-
 
     [('model.models.0.trend.init_layer.weight', Parameter containing:
       tensor([[0.0235]], requires_grad=True)),
@@ -151,13 +143,12 @@ list(model.named_parameters())
      ('model.models.2.trend.init_layer.bias', Parameter containing:
       tensor([0.9838], requires_grad=True))]
 
-
-
 </div>
 
 </div>
 
 Obviously more works needs to be done as seen in the graph above. However, note that:
+
 1. The seasonal component is captured.
 2. The quantiles are asymmetric, which cannot happen in the fb-prophet case.
 3. **I will fix these short comings if there is enough interest.**
